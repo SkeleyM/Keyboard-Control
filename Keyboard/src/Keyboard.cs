@@ -21,8 +21,8 @@ namespace Simulate
 
     class VirtualKeyCodes
     {
-        public const int KEY_DOWN_EVENT = 0x0001; //Key down flag
-        public const int KEY_UP_EVENT = 0x0002; //Key up flag
+        public const int KEY_DOWN_EVENT = 0x0001; // Key down flag
+        public const int KEY_UP_EVENT = 0x0002; // Key up flag
 
         public const byte VK_LBUTTON = 0x01;    //Left mouse button
         public const byte VK_RBUTTON = 0x02;    //Right mouse button
