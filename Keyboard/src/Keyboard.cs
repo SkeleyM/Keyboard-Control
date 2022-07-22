@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 
@@ -6,21 +7,75 @@ namespace Simulate
 {
     class Keyboard
     {
-
-
         [DllImport("user32")]
         public static extern void keybd_event(byte bVk, byte bScan, UInt32 dwFlags, UIntPtr dwExtraInfo);
 
+        // PressKey is just keybd_event however its easier to use
         public static void PressKey(byte VK, UInt32 dwFlags)
         {
             keybd_event(VK, 0, dwFlags, new UIntPtr(1));
         }
 
+        public static void Write(string str)
+        {   
+            // makes them lowercase so that all the characters match with the dictionary in GetKeyCode()
+            char[] letters = str.ToLower().ToCharArray();
+            for (int i = 0; i < letters.Length; i++)
+            {
+                byte keyCode = VirtualKeyCodes.GetKeyCode(letters[i]);
+                PressKey(keyCode, VirtualKeyCodes.KEY_DOWN_EVENT);
+            }
+            
+        }
+        
+
         
     }
 
+    // Lots of KeyCodes
     class VirtualKeyCodes
-    {
+    {   
+        // returns the Keycode that matches with the character parameter 
+        public static byte GetKeyCode(char ch)
+        {   
+            // dictionary with the key being a character and value being the keycode
+            Dictionary<char, byte> keyCodeDict = new Dictionary<char, byte>()
+            {    
+                {'a', VK_A},
+                {'b', VK_B},
+                {'c', VK_C},
+                {'d', VK_D},
+                {'e', VK_E},
+                {'f', VK_F},
+                {'g', VK_G},
+                {'h', VK_H},
+                {'i', VK_I},
+                {'j', VK_J},
+                {'k', VK_K},
+                {'l', VK_L},
+                {'m', VK_M},
+                {'n', VK_N},
+                {'o', VK_O},
+                {'p', VK_P},
+                {'q', VK_Q},
+                {'r', VK_R},
+                {'s', VK_S},
+                {'t', VK_T},
+                {'u', VK_U},
+                {'v', VK_V},
+                {'w', VK_W},
+                {'x', VK_X},
+                {'y', VK_Y},
+                {'z', VK_Z},
+                {' ', VK_SPACE},
+        };
+
+            return keyCodeDict[ch];
+        }
+
+        
+
+
         public const int KEY_DOWN_EVENT = 0x0001; // Key down flag
         public const int KEY_UP_EVENT = 0x0002; // Key up flag
 
@@ -102,7 +157,8 @@ namespace Simulate
         public const byte VK_U = 0x55; //U key
         public const byte VK_V = 0x56; //V key
         public const byte VK_W = 0x57; //W key
-        public const byte VK_X = 0x59; //Y key
+        public const byte VK_X = 0x58; //W key
+        public const byte VK_Y = 0x59; //Y key
         public const byte VK_Z = 0x5A; //Z key
         public const byte VK_LWIN = 0x5B;   //Left Windows key(Natural keyboard)
         public const byte VK_RWIN = 0x5C;   //Right Windows key(Natural keyboard)
